@@ -13,7 +13,6 @@ let bodyParser = require('body-parser');
 let db = require('./server/db');
 
 let app = express();
-app.use(bodyParser.json());
 
 app.listen(PORT, () => {
     if (enableAuth) {
@@ -25,12 +24,14 @@ app.listen(PORT, () => {
     }
 });
 
+app.use(bodyParser.json());
 app.use('/public', express.static(path.join(__dirname, '/public')));
 app.use(function corsMiddleware(req, res, next) {
     if (enableCors) {
         res.setHeader('access-control-allow-origin', 'https://www.google.com');
     } else {
         res.setHeader('access-control-allow-origin', '*');
+        res.setHeader('access-control-allow-headers', '*');
     }
     next();
 });
